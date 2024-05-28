@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
-from slstm import *
-from mlstm import *
+from xLSTM.slstm import *
+from xLSTM.mlstm import *
 
 class xLSTMBlock(nn.Module):
     def __init__(self, input_size, hidden_size, num_layers, dropout=0.0, bidirectional=False, lstm_type="slstm"):
