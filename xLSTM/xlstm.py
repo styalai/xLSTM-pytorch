@@ -67,7 +67,7 @@ class xLSTMBlock(nn.Module):
     
     
 class xLSTM(nn.Module):
-    def __init__(self, embedding_size, hidden_size, num_layers, num_blocks, dropout=0.0, bidirectional=False, lstm_type="slstm"):
+    def __init__(self, embedding_size, hidden_size, num_layers, num_blocks, config_block, dropout=0.0, bidirectional=False, lstm_type="slstm"):
         super(xLSTM, self).__init__()
         self.embedding_size = embedding_size
         self.hidden_size = hidden_size
@@ -77,10 +77,15 @@ class xLSTM(nn.Module):
         self.bidirectional = bidirectional
         self.lstm_type = lstm_type
         self.hidden_states = [None] * self.num_blocks
-
+        self.config_block = config_block
 
         self.blocks = nn.ModuleList([xLSTMBlock(embedding_size if i == 0 else hidden_size,
-                                                hidden_size, num_layers, dropout, bidirectional, lstm_type)
+                                                hidden_size, 
+                                                num_layers, 
+                                                dropout, 
+                                                bidirectional,
+                                                self.config_block[i]
+                                               )
                                      for i in range(num_blocks)])
 
     def forward(self, input_seq, hidden_states=None):
@@ -88,7 +93,7 @@ class xLSTM(nn.Module):
         output_seq = input_seq
         for i, block in enumerate(self.blocks):
             output_seq, hidden_state = block(output_seq, self.hidden_states[i])
-            if self.lstm_type == "slstm":
+            if self.config_block[i] == "slstm":
                 hidden_state = [[h.detach() for h in hs] for hs in hidden_state]
                 self.hidden_states[i] = [[hidden_state[j][0], hidden_state[j][1]] for j in range(len(hidden_state))]
             else:
