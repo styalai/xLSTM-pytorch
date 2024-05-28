@@ -26,3 +26,16 @@ out = model(x)
 print(out.shape)
 # torch.Size([4, 8, 54])
 ```
+
+## Citation
+
+If you use xlstm-pytorch in your research or projects, please cite the original xLSTM paper:
+
+```bibtex
+@article{Beck2024xLSTM,
+  title={xLSTM: Extended Long Short-Term Memory},
+  author={Beck, Maximilian and Pöppel, Korbinian and Spanring, Markus and Auer, Andreas and Prudnikova, Oleksandra and Kopp, Michael and Klambauer, Günter and Brandstetter, Johannes and Hochreiter, Sepp},
+  journal={arXiv preprint arXiv:2405.04517},
+  year={2024}
+}
+```
