@@ -8,7 +8,7 @@ pip install git+https://github.com/styalai/xLSTM-pytorch
 ## Example
 
 ```python
-from xSLTM_pytorch.xLSTM import xLSTM
+from xLSTM.xlstm import *
 
 input_size = 54
 hidden_size = 54
@@ -20,5 +20,7 @@ seq_len = 8
 model = xLSTM(input_size, hidden_size, num_layers, num_blocks)
 
 x = torch.randn(batch_size, seq_len, input_size)
-model(x)
+out = model(x)
+print(out.shape)
+# torch.Size([4, 8, 54])
 ```
