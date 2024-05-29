@@ -46,6 +46,9 @@ class xLSTMBlock(nn.Module):
 
         nn.init.xavier_uniform_(self.proj.weight)
         nn.init.zeros_(self.proj.bias)
+        
+    def init_hidden_states(self, batch_size):
+        self.lstm.init_hidden(batch_size)
 
     def forward(self, input_seq, hidden_state=None):
         if hasattr(self, "up_proj"):
@@ -87,7 +90,10 @@ class xLSTM(nn.Module):
                                                 self.config_block[i]
                                                )
                                      for i in range(num_blocks)])
-
+    def init_hidden_states(self, batch_size):
+        for b in self.blocks:
+            b.init_hidden_states(batch_size)
+        
     def forward(self, input_seq, hidden_states=None):
         
         output_seq = input_seq
