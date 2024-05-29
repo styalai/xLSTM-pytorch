@@ -1,6 +1,3 @@
-import torch
-import torch.nn as nn
-
 class mLSTM(nn.Module):
     def __init__(self, input_size, hidden_size, num_layers, dropout=0.0):
         super(mLSTM, self).__init__()
@@ -81,7 +78,7 @@ class mLSTM(nn.Module):
                     x = h
             hidden_state = new_hidden_state
             output_seq.append(x)
-
+        
         output_seq = torch.stack(output_seq, dim=1)
         return output_seq, hidden_state
 
