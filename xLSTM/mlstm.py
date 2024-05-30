@@ -106,7 +106,3 @@ class mLSTM(nn.Module):
             C = torch.zeros(batch_size, self.hidden_size, self.hidden_size, device=lstm.weight_ih.device)
             hidden_state.append((h, C))
         return hidden_state
-            h = torch.zeros(batch_size, self.hidden_size, device=lstm.weight_ih.device)
-            C = torch.zeros(batch_size, self.hidden_size, self.hidden_size, device=lstm.weight_ih.device)
-            hidden_state.append((h, C))
-        return hidden_state
