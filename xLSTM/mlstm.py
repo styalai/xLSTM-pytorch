@@ -53,11 +53,10 @@ class mLSTM(nn.Module):
         for t in range(seq_length):
             x = input_seq[:, t, :].view(batch_size, 1, input_seq.shape[2])
             queries = self.W_q(x)
-            keys = self.W_k(x).squeeze()
-            values = self.W_v(x).squeeze()
+            keys = self.W_k(x).squeeze(1)
+            values = self.W_v(x).squeeze(1)
 
             new_hidden_state = []
-            #for idx, (lstm, dropout, i_gate, f_gate, o_gate) in enumerate(zip(self.lstms, self.dropout_layers, self.exp_input_gates, self.exp_forget_gates, self.output_gates)):
             for idx in range(self.num_layers):
                 lstm = self.lstms[idx]
                 dropout = self.dropout_layers[idx]
@@ -73,7 +72,7 @@ class mLSTM(nn.Module):
                 
                 i = torch.exp(i_gate(x))# [4, 1, 10]
                 f = torch.exp(f_gate(x)) # [4, 1, 10]
-                
+
                 matmul = torch.matmul(values.unsqueeze(2), keys.unsqueeze(1)) # [4, 10, 10]
                 C_t = f * C + i * matmul # ([4, 10, 10])
 
@@ -103,4 +102,3 @@ class mLSTM(nn.Module):
             C = torch.zeros(batch_size, self.hidden_size, self.hidden_size, device=lstm.weight_ih.device)
             hidden_state.append((h, C))
         return hidden_state
-    
