@@ -21,6 +21,7 @@ class mLSTM(nn.Module):
         self.output_gates = nn.ModuleList([nn.Linear(hidden_size, hidden_size) for _ in range(num_layers)])
         
         self.ln_c = nn.LayerNorm(hidden_size)
+        self.ln_x = nn.LayerNorm(hidden_size)
         
         self.reset_parameters()
 
@@ -52,6 +53,7 @@ class mLSTM(nn.Module):
         output_seq = []
         for t in range(seq_length):
             x = input_seq[:, t, :].view(batch_size, 1, input_seq.shape[2])
+            x = self.ln_x(x)
             queries = self.W_q(x)
             keys = self.W_k(x).squeeze(1)
             values = self.W_v(x).squeeze(1)
