@@ -93,9 +93,10 @@ class mLSTM(nn.Module):
                     x = h.view(batch_size, 1, h.shape[1])
 
             hidden_state = new_hidden_state
+            
             output_seq.append(x)
         
-        output_seq = torch.stack(output_seq, dim=1)
+        output_seq = torch.stack(output_seq, dim=1).squeeze(2)
         return output_seq, hidden_state
 
     def init_hidden(self, batch_size):
