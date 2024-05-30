@@ -54,7 +54,7 @@ class mLSTM(nn.Module):
         for t in range(seq_length):
             x = input_seq[:, t, :].view(batch_size, 1, input_seq.shape[2])
             x = self.ln_x(x)
-            print("x: ",x.shape)
+
             queries = self.W_q(x)
             keys = self.W_k(x).squeeze(1)
             values = self.W_v(x).squeeze(1)
@@ -78,7 +78,6 @@ class mLSTM(nn.Module):
 
                 matmul = torch.matmul(values.unsqueeze(2), keys.unsqueeze(1)) # [4, 10, 10]
                 C_t = f * C + i * matmul # ([4, 10, 10])
-
                 
                 attn_output = torch.matmul(queries, C_t).squeeze() # [4, 10]
                 
