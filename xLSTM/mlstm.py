@@ -10,7 +10,7 @@ class mLSTM(nn.Module):
         self.dropout = dropout
 
         self.lstms = nn.ModuleList([nn.LSTMCell(input_size, hidden_size) for _ in range(num_layers)])
-        self.dropout_layers = nn.ModuleList([nn.Dropout(dropout) for _ in range(num_layers - 1)])
+        self.dropout_layers = nn.ModuleList([nn.Dropout(dropout) for _ in range(num_layers)])
 
         self.W_q = nn.Linear(input_size, hidden_size)
         self.W_k = nn.Linear(input_size, hidden_size)
@@ -51,27 +51,37 @@ class mLSTM(nn.Module):
 
         output_seq = []
         for t in range(seq_length):
-            x = input_seq[:, t, :]
+            x = input_seq[:, t, :].view(batch_size, 1, input_seq.shape[2])
             queries = self.W_q(x)
-            keys = self.W_k(x)
-            values = self.W_v(x)
+            keys = self.W_k(x).squeeze()
+            values = self.W_v(x).squeeze()
 
             new_hidden_state = []
-            for idx, (lstm, dropout, i_gate, f_gate, o_gate) in enumerate(zip(self.lstms, self.dropout_layers, self.exp_input_gates, self.exp_forget_gates, self.output_gates)):
+            #for idx, (lstm, dropout, i_gate, f_gate, o_gate) in enumerate(zip(self.lstms, self.dropout_layers, self.exp_input_gates, self.exp_forget_gates, self.output_gates)):
+            for idx in range(self.num_layers):
+                lstm = self.lstms[idx]
+                dropout = self.dropout_layers[idx]
+                i_gate = self.exp_input_gates[idx]
+                f_gate = self.exp_forget_gates[idx]
+                o_gate = self.output_gates[idx]
+
                 if hidden_state[idx][0] is None:
                     h, C = lstm(x)
                 else:
                     h, C = hidden_state[idx]
-
-                i = torch.exp(i_gate(x))
-                f = torch.exp(f_gate(x))
-                C = self.ln_c(C)
+                C = self.ln_c(C)# ([4, 10, 10]) 
                 
-                C_t = f * C + i * torch.mul(values, keys)
-
-                attn_output = torch.mul(queries, C_t)
+                i = torch.exp(i_gate(x))# [4, 1, 10]
+                f = torch.exp(f_gate(x)) # [4, 1, 10]
                 
-                o = torch.sigmoid(o_gate(h))
+                matmul = torch.matmul(values.unsqueeze(2), keys.unsqueeze(1)) # [4, 10, 10]
+                C_t = f * C + i * matmul # ([4, 10, 10])
+
+                
+                attn_output = torch.matmul(queries, C_t).squeeze() # [4, 10]
+                
+                o = torch.sigmoid(o_gate(h))# [4, 10]
+   
                 h = o * attn_output
                 new_hidden_state.append((h, C_t))
 
@@ -79,6 +89,7 @@ class mLSTM(nn.Module):
                     x = dropout(h)
                 else:
                     x = h
+
             hidden_state = new_hidden_state
             output_seq.append(x)
         
@@ -89,6 +100,7 @@ class mLSTM(nn.Module):
         hidden_state = []
         for lstm in self.lstms:
             h = torch.zeros(batch_size, self.hidden_size, device=lstm.weight_ih.device)
-            C = torch.zeros(batch_size, self.hidden_size, device=lstm.weight_ih.device)
+            C = torch.zeros(batch_size, self.hidden_size, self.hidden_size, device=lstm.weight_ih.device)
             hidden_state.append((h, C))
         return hidden_state
+    
