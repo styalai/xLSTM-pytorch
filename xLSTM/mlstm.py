@@ -54,6 +54,7 @@ class mLSTM(nn.Module):
         for t in range(seq_length):
             x = input_seq[:, t, :].view(batch_size, 1, input_seq.shape[2])
             x = self.ln_x(x)
+            print("x: ",x.shape)
             queries = self.W_q(x)
             keys = self.W_k(x).squeeze(1)
             values = self.W_v(x).squeeze(1)
@@ -84,12 +85,13 @@ class mLSTM(nn.Module):
                 o = torch.sigmoid(o_gate(h))# [4, 10]
    
                 h = o * attn_output
-                new_hidden_state.append((h, C_t))
 
+                new_hidden_state.append((h, C_t))
+                
                 if idx < self.num_layers - 1:
-                    x = dropout(h)
+                    x = dropout(h.view(batch_size, 1, h.shape[1]))
                 else:
-                    x = h
+                    x = h.view(batch_size, 1, h.shape[1])
 
             hidden_state = new_hidden_state
             output_seq.append(x)
@@ -100,6 +102,10 @@ class mLSTM(nn.Module):
     def init_hidden(self, batch_size):
         hidden_state = []
         for lstm in self.lstms:
+            h = torch.zeros(batch_size, self.hidden_size, device=lstm.weight_ih.device)
+            C = torch.zeros(batch_size, self.hidden_size, self.hidden_size, device=lstm.weight_ih.device)
+            hidden_state.append((h, C))
+        return hidden_state
             h = torch.zeros(batch_size, self.hidden_size, device=lstm.weight_ih.device)
             C = torch.zeros(batch_size, self.hidden_size, self.hidden_size, device=lstm.weight_ih.device)
             hidden_state.append((h, C))
