@@ -59,9 +59,11 @@ class mLSTMblock(nn.Module):
         
         ct_1 = self.ct_1
         ct = f*ct_1 + i*v*k
+        self.ct_1 = ct.detach()
         
         nt_1 = self.nt_1
         nt = f*nt_1 + i*k
+        self.nt_1 = nt.detach()
         
         ht = o * ((ct*q) / torch.max(nt*q)) # [batchs_size, ?, hiddden_size]
         # end mLSTM
