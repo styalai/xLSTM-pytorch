@@ -33,7 +33,7 @@ class mLSTMblock(nn.Module):
         self.ln_out = nn.LayerNorm(self.hidden_size)
         
         self.proj = nn.Linear(self.hidden_size, self.input_size)
-        self.ln_proj = nn.LayerNorm(self.hidden_size)
+        self.ln_proj = nn.LayerNorm(self.input_size)
         
         self.init_states(x_example)
     
