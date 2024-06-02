@@ -30,6 +30,8 @@ class sLSTMblock(nn.Module):
         
         self.left_linear = nn.Linear(self.input_size, int(self.input_size*(4/3)))
         self.right_linear = nn.Linear(self.input_size, int(self.input_size*(4/3)))
+
+        self.ln_out = nn.LayerNorm(int(self.input_size*(4/3)))
         
         self.proj = nn.Linear(int(self.input_size*(4/3)), self.input_size)
         
@@ -74,7 +76,7 @@ class sLSTMblock(nn.Module):
         left = self.left_linear(slstm_out)
         right = F.gelu(self.right_linear(slstm_out))
         
-        out = left*right
-        out = self.proj(out) + x
+        out = self.ln_out(left*right)
+        out = self.proj(out)
         return out
   
