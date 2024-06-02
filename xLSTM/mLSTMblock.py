@@ -26,7 +26,9 @@ class mLSTMblock(nn.Module):
         self.i_gate = nn.Linear(self.hidden_size, self.hidden_size)
         self.f_gate = nn.Linear(self.hidden_size, self.hidden_size)
         self.o_gate = nn.Linear(self.hidden_size, self.hidden_size)
-        
+
+        self.ln_c = nn.LayerNorm(self.hidden_size)
+        self.ln_n = nn.LayerNorm(self.hidden_size)
         self.GN = nn.LayerNorm(self.hidden_size)
         
         self.proj = nn.Linear(self.hidden_size, self.input_size)
@@ -59,10 +61,12 @@ class mLSTMblock(nn.Module):
         
         ct_1 = self.ct_1
         ct = f*ct_1 + i*v*k
+        ct = self.ln_c(ct)
         self.ct_1 = ct.detach()
         
         nt_1 = self.nt_1
         nt = f*nt_1 + i*k
+        nt = self.ln_n(nt)
         self.nt_1 = nt.detach()
         
         ht = o * ((ct*q) / torch.max(nt*q)) # [batchs_size, ?, hiddden_size]
