@@ -28,6 +28,24 @@ print(out.shape)
 # torch.Size([4, 8, 54])
 ```
 
+```python
+from xLSTM.mLSTMblock import mLSTMblock
+
+batch_size = 4
+seq_lenght = 8
+input_size = 32
+x_example = torch.zeros(batch_size, seq_lenght, input_size)
+factor = 2 # by how much is input_size multiplied to give hidden_size
+depth = 4 # number of block for q, k and v 
+
+model = mLSTMblock(x_example, factor, depth)
+
+x = torch.randn(batch_size, seq_len, input_size)
+out = model(x)
+print(out.shape)
+# torch.Size([4, 8, 32])
+```
+
 ## Citation
 
 If you use xlstm-pytorch in your research or projects, please cite the original xLSTM paper:
