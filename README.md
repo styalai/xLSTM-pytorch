@@ -9,7 +9,7 @@ pip install git+https://github.com/styalai/xLSTM-pytorch
 ## Example
 
 ```python
-from xLSTM.xlstm import *
+from xLSTM_simple.xlstm import *
 
 input_size = 54
 hidden_size = 54
