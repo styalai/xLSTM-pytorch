@@ -56,7 +56,7 @@ class sLSTMblock(nn.Module):
         
         ct_1 = self.ct_1
         ct = f*ct_1 + i*z
-        ct = self.ln_c(vt)
+        ct = self.ln_c(ct)
         self.ct_1 = ct.detach()
         
         nt_1 = self.nt_1
