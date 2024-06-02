@@ -24,6 +24,9 @@ class sLSTMblock(nn.Module):
         self.rz_gate = BlockDiagonal(self.input_size, self.input_size, depth, bias=False)
         
         self.GN = nn.LayerNorm(self.input_size)
+        self.ln_c = nn.LayerNorm(self.input_size)
+        self.ln_n = nn.LayerNorm(self.input_size)
+        self.ln_h = nn.LayerNorm(self.input_size)
         
         self.left_linear = nn.Linear(self.input_size, int(self.input_size*(4/3)))
         self.right_linear = nn.Linear(self.input_size, int(self.input_size*(4/3)))
@@ -53,13 +56,16 @@ class sLSTMblock(nn.Module):
         
         ct_1 = self.ct_1
         ct = f*ct_1 + i*z
+        ct = self.ln_c(vt)
         self.ct_1 = ct.detach()
         
         nt_1 = self.nt_1
         nt = f*nt_1 + i
+        nt = self.ln_n(nt)
         self.nt_1 = nt.detach()
         
         ht = o*(ct/nt) # torch.Size([4, 8, 16])
+        ht = self.ln_h(ht)
         self.ht_1 = ht.detach()
         # end sLSTM
         
