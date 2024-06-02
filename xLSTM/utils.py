@@ -9,7 +9,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class BlockDiagonal(nn.Module):
-    def __init__(self, in_features, out_features, num_blocks):
+    def __init__(self, in_features, out_features, num_blocks, bias=True):
         super(BlockDiagonal, self).__init__()
         self.in_features = in_features
         self.out_features = out_features
@@ -20,7 +20,7 @@ class BlockDiagonal(nn.Module):
         block_out_features = out_features // num_blocks
         
         self.blocks = nn.ModuleList([
-            nn.Linear(in_features, block_out_features)
+            nn.Linear(in_features, block_out_features, bias=bias)
             for _ in range(num_blocks)
         ])
         
