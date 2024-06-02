@@ -10,6 +10,8 @@ pip install git+https://github.com/styalai/xLSTM-pytorch
 ## Example
 
 ```python
+import torch
+import torch.nn as nn
 from xLSTM.xLSTM import xLSTM as xlstm
 
 batch_size = 4
@@ -18,11 +20,11 @@ input_size = 32
 x_example = torch.zeros(batch_size, seq_lenght, input_size)
 factor = 2 # by how much is input_size multiplied to give hidden_size
 depth = 4 # number of block for q, k and v
-layers = 'msms' # m for mLSTMblock and s for sLSTMblock
+layers = 'ms' # m for mLSTMblock and s for sLSTMblock
 
-model = xlstm(x_example, factor=factor, depth=depth)
+model = xlstm(layers, x_example, factor=factor, depth=depth)
 
-x = torch.randn(batch_size, seq_len, input_size)
+x = torch.randn(batch_size, seq_lenght, input_size)
 out = model(x)
 print(out.shape)
 # torch.Size([4, 8, 32])
