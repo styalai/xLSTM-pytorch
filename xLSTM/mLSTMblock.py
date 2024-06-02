@@ -29,6 +29,11 @@ class mLSTMblock(nn.Module):
 
         self.ln_c = nn.LayerNorm(self.hidden_size)
         self.ln_n = nn.LayerNorm(self.hidden_size)
+        
+        self.lnf = nn.LayerNorm(self.hidden_size)
+        self.lno = nn.LayerNorm(self.hidden_size)
+        self.lni = nn.LayerNorm(self.hidden_size)
+        
         self.GN = nn.LayerNorm(self.hidden_size)
         self.ln_out = nn.LayerNorm(self.hidden_size)
         
@@ -57,9 +62,9 @@ class mLSTMblock(nn.Module):
         k = self.wk(left_left)
         v = self.wv(left)
         
-        i = torch.exp(self.i_gate(left_left))
-        f = torch.exp(self.f_gate(left_left))
-        o = torch.sigmoid(self.o_gate(left_left))
+        i = torch.exp(self.lni(self.i_gate(left_left)))
+        f = torch.exp(self.lnf(self.f_gate(left_left)))
+        o = torch.sigmoid(self.lno(self.o_gate(left_left)))
         
         ct_1 = self.ct_1
         ct = f*ct_1 + i*v*k
