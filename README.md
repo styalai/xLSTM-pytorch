@@ -9,6 +9,7 @@ pip install git+https://github.com/styalai/xLSTM-pytorch
 ```
 ## Example
 
+Version simple :
 ```python
 from xLSTM_simple.xlstm import *
 
@@ -28,6 +29,7 @@ print(out.shape)
 # torch.Size([4, 8, 54])
 ```
 
+Advanced version :
 ```python
 from xLSTM.mLSTMblock import mLSTMblock
 
@@ -45,7 +47,7 @@ out = model(x)
 print(out.shape)
 # torch.Size([4, 8, 32])
 ```
-
+Note : if you load a mLSTMblock after training you must do : model.init_states(x_example)
 ## Citation
 
 If you use xlstm-pytorch in your research or projects, please cite the original xLSTM paper:
