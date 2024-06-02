@@ -29,25 +29,26 @@ print(out.shape)
 # torch.Size([4, 8, 54])
 ```
 
-Advanced version (the sLSTM and xLSTM come soon) :
+Advanced version :
 ```python
-from xLSTM.mLSTMblock import mLSTMblock
+from xLSTM.xLSTM import xLSTM as xlstm
 
 batch_size = 4
 seq_lenght = 8
 input_size = 32
 x_example = torch.zeros(batch_size, seq_lenght, input_size)
 factor = 2 # by how much is input_size multiplied to give hidden_size
-depth = 4 # number of block for q, k and v 
+depth = 4 # number of block for q, k and v
+layers = 'msms' # m for mLSTMblock and s for sLSTMblock
 
-model = mLSTMblock(x_example, factor, depth)
+model = xlstm(x_example, factor=factor, depth=depth)
 
 x = torch.randn(batch_size, seq_len, input_size)
 out = model(x)
 print(out.shape)
 # torch.Size([4, 8, 32])
 ```
-Note : if you load a mLSTMblock after training you must do : model.init_states(x_example)
+Note : if you load a xlstm after training you must do : model.init_states(x_example)
 ## Citation
 
 If you use xlstm-pytorch in your research or projects, please cite the original xLSTM paper:
