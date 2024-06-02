@@ -1,6 +1,6 @@
 original code from https://github.com/muditbhargava66/PyxLSTM
 # xLSTM-pytorch
-A easy to use implementation of xLSTM
+A easy to use implementation of xLSTM.\n
 I work on a version more advanced with an entirely xLSTM implementation.
 
 ## Installation
