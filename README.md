@@ -29,7 +29,7 @@ print(out.shape)
 # torch.Size([4, 8, 54])
 ```
 
-Advanced version :
+Advanced version (the sLSTM and xLSTM come soon) :
 ```python
 from xLSTM.mLSTMblock import mLSTMblock
 
