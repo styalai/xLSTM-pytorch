@@ -41,4 +41,4 @@ If you use xlstm-pytorch in your research or projects, please cite the original 
 }
 ```
 ## Code from
-The original code of utils come from https://github.com/akaashdash/xlstm
+The original code of 'xLSTM/utils.py' come from https://github.com/akaashdash/xlstm
