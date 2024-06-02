@@ -40,3 +40,5 @@ If you use xlstm-pytorch in your research or projects, please cite the original 
   year={2024}
 }
 ```
+## Code from
+The original code of utils come from https://github.com/akaashdash/xlstm
