@@ -33,6 +33,7 @@ class mLSTMblock(nn.Module):
         self.ln_out = nn.LayerNorm(self.hidden_size)
         
         self.proj = nn.Linear(self.hidden_size, self.input_size)
+        self.ln_proj = nn.LayerNorm(self.hidden_size)
         
         self.init_states(x_example)
     
@@ -76,7 +77,7 @@ class mLSTMblock(nn.Module):
         left = self.GN(ht + l_skip)
         
         out = self.ln_out(left * right)
-        out = self.proj(out)
+        out = self.ln_proj(self.proj(out))
         
         return out
         
