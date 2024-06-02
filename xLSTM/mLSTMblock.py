@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from xLSTM.utils import BlockDiagonal, CausalConv1D
 
 class mLSTMblock(nn.Module):
-    def __init__(self, x_example, factor, depth):
+    def __init__(self, x_example, factor, depth, conv=False):
         super().__init__()
         self.input_size = x_example.shape[2]
         conv_channels = x_example.shape[1]
@@ -15,7 +15,7 @@ class mLSTMblock(nn.Module):
         self.left = nn.Linear(self.input_size, self.hidden_size)
         self.right = nn.Linear(self.input_size, self.hidden_size)
         
-        self.conv = CausalConv1D(conv_channels, conv_channels, self.hidden_size)
+        self.conv = CausalConv1D(conv_channels, conv_channels, self.hidden_size) if conv else nn.Sequential(nn.Linear(self.hidden_size, int(self.hidden_size*2)), nn.ReLU(), nn.Linear(int(self.hidden_size*2), self.hidden_size))
         
         self.lskip = nn.Linear(self.hidden_size, self.hidden_size)
         
