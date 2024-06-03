@@ -11,7 +11,7 @@ class sLSTMblock(nn.Module):
         
         self.ln = nn.LayerNorm(self.input_size)
         
-        self.conv = CausalConv1D(conv_channels, conv_channels, self.input_size)
+        self.conv = CausalConv1D(conv_channels, conv_channels, self.input_size) if conv else nn.Sequential(nn.Linear(self.input_size, int(self.input_size*2)), nn.ReLU(), nn.Linear(int(self.input_size*2), self.input_size))
         
         self.i_gate = BlockDiagonal(self.input_size, self.input_size, depth)
         self.f_gate = BlockDiagonal(self.input_size, self.input_size, depth)
