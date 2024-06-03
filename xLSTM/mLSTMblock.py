@@ -14,7 +14,7 @@ class mLSTMblock(nn.Module):
         self.left = nn.Linear(self.input_size, self.hidden_size)
         self.right = nn.Linear(self.input_size, self.hidden_size)
         
-        self.conv = CausalConv1D(self.input_size, self.input_size, self.hidden_size) 
+        self.conv = CausalConv1D(self.input_size, self.input_size, self.input_size) 
         
         self.lskip = nn.Linear(self.hidden_size, self.hidden_size)
         
@@ -53,7 +53,9 @@ class mLSTMblock(nn.Module):
         left = self.left(x) # part left 
         right = F.silu(self.right(x)) # part right with just swish (silu) function
 
-        left_left = F.silu(self.conv( left.transpose(1, 2) ).transpose(1, 2) )
+        left_left = left.transpose(1, 2)
+        print(self.input_size, left_left.shape)
+        left_left = F.silu(self.conv( left_left ).transpose(1, 2) )
         l_skip = self.lskip(left_left)
 
         # start mLSTM
