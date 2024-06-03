@@ -4,10 +4,9 @@ import torch.nn.functional as F
 from xLSTM.utils import BlockDiagonal, CausalConv1D
 
 class mLSTMblock(nn.Module):
-    def __init__(self, x_example, factor, depth, conv=False):
+    def __init__(self, x_example, factor, depth):
         super().__init__()
         self.input_size = x_example.shape[2]
-        conv_channels = x_example.shape[1]
         self.hidden_size = int(self.input_size*factor)
         
         self.ln = nn.LayerNorm(self.input_size)
@@ -15,16 +14,8 @@ class mLSTMblock(nn.Module):
         self.left = nn.Linear(self.input_size, self.hidden_size)
         self.right = nn.Linear(self.input_size, self.hidden_size)
         
-        self.conv = CausalConv1D(conv_channels, conv_channels, self.hidden_size) 
-        """
-        if conv else nn.Sequential(
-            nn.Linear(self.hidden_size, int(self.hidden_size*4)), 
-            nn.ReLU(), 
-            nn.Linear(int(self.hidden_size*4), int(self.hidden_size*4)),
-            nn.ReLU(),
-            nn.Linear(int(self.hidden_size*4), self.hidden_size),
-        )
-        """
+        self.conv = CausalConv1D(self.input_size, self.input_size, self.hidden_size) 
+        
         self.lskip = nn.Linear(self.hidden_size, self.hidden_size)
         
         self.wq = BlockDiagonal(self.hidden_size, self.hidden_size, depth)
@@ -62,7 +53,7 @@ class mLSTMblock(nn.Module):
         left = self.left(x) # part left 
         right = F.silu(self.right(x)) # part right with just swish (silu) function
 
-        left_left = F.silu(self.conv(left))
+        left_left = F.silu(self.conv( left.transpose(1, 2) ).transpose(1, 2) )
         l_skip = self.lskip(left_left)
 
         # start mLSTM
