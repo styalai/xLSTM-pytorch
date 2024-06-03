@@ -2,7 +2,7 @@
 A easy to use and efficient implementation of xLSTM.
 
 ## INFO
-I am sorry for the potencial mistakes on my docs because I am French and and don't speak english very well.
+I am sorry for the potencial mistakes on my docs because I am French and and don't speak english very well. <br>And if you like this repository put a star</br>.
 
 ## Installation
 ```python
