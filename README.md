@@ -27,7 +27,6 @@ out = model(x)
 print(out.shape)
 # torch.Size([4, 8, 32])
 ```
-Note : If the seq_lenght change ( for nlp for example ) you must specify conv=False.
 ## Citation
 
 If you use xlstm-pytorch in your research or projects, please cite the original xLSTM paper:
