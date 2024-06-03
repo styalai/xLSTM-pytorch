@@ -20,14 +20,14 @@ factor = 2 # by how much is input_size multiplied to give hidden_size
 depth = 4 # number of block for q, k and v
 layers = 'ms' # m for mLSTMblock and s for sLSTMblock
 
-model = xlstm(layers, x_example, factor=factor, depth=depth)
+model = xlstm(layers, x_example, factor=factor, depth=depth, conv=True)
 
 x = torch.randn(batch_size, seq_lenght, input_size)
 out = model(x)
 print(out.shape)
 # torch.Size([4, 8, 32])
 ```
-Note : if you load a xlstm after training you must do : model.init_states(x_example)
+Note : If the seq_lenght change ( for nlp for example ) you must specify conv=False.
 ## Citation
 
 If you use xlstm-pytorch in your research or projects, please cite the original xLSTM paper:
