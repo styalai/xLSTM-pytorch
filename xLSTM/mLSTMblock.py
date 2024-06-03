@@ -18,9 +18,9 @@ class mLSTMblock(nn.Module):
         self.conv = CausalConv1D(conv_channels, conv_channels, self.hidden_size) if conv else nn.Sequential(
             nn.Linear(self.hidden_size, int(self.hidden_size*4)), 
             nn.ReLU(), 
-            nn.Linear(int(self.hidden_size*2), int(self.hidden_size*4))
+            nn.Linear(int(self.hidden_size*2), int(self.hidden_size*4)),
             nn.ReLU(),
-            nn.Linear(int(self.hidden_size*2), self.hidden_size)
+            nn.Linear(int(self.hidden_size*2), self.hidden_size),
         )
         
         self.lskip = nn.Linear(self.hidden_size, self.hidden_size)
