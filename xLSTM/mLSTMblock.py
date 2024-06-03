@@ -15,14 +15,16 @@ class mLSTMblock(nn.Module):
         self.left = nn.Linear(self.input_size, self.hidden_size)
         self.right = nn.Linear(self.input_size, self.hidden_size)
         
-        self.conv = CausalConv1D(conv_channels, conv_channels, self.hidden_size) if conv else nn.Sequential(
+        self.conv = CausalConv1D(conv_channels, conv_channels, self.hidden_size) 
+        """
+        if conv else nn.Sequential(
             nn.Linear(self.hidden_size, int(self.hidden_size*4)), 
             nn.ReLU(), 
             nn.Linear(int(self.hidden_size*4), int(self.hidden_size*4)),
             nn.ReLU(),
             nn.Linear(int(self.hidden_size*4), self.hidden_size),
         )
-        
+        """
         self.lskip = nn.Linear(self.hidden_size, self.hidden_size)
         
         self.wq = BlockDiagonal(self.hidden_size, self.hidden_size, depth)
