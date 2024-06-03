@@ -54,7 +54,6 @@ class mLSTMblock(nn.Module):
         right = F.silu(self.right(x)) # part right with just swish (silu) function
 
         left_left = left.transpose(1, 2)
-        print(self.input_size, left_left.shape, left.shape)
         left_left = F.silu(self.conv( left_left ).transpose(1, 2) )
         l_skip = self.lskip(left_left)
 
