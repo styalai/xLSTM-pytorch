@@ -1,5 +1,5 @@
 # xLSTM-pytorch
-A easy to use implementation of xLSTM.
+A easy to use and efficient implementation of xLSTM.
 
 ## Installation
 ```python
