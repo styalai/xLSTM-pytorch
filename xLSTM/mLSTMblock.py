@@ -65,7 +65,9 @@ class mLSTMblock(nn.Module):
         i = torch.exp(self.lni(self.i_gate(left_left)))
         f = torch.exp(self.lnf(self.f_gate(left_left)))
         o = torch.sigmoid(self.lno(self.o_gate(left_left)))
-        
+
+        if f.shape != self.ct_1.shape:
+            self.init_states(f)
         ct_1 = self.ct_1
         ct = f*ct_1 + i*v*k
         ct = self.ln_c(ct)
