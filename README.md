@@ -1,6 +1,9 @@
 # xLSTM-pytorch
 A easy to use and efficient implementation of xLSTM.
 
+## INFO
+I am sorry for the potencial mistakes on my docs because I am French and and don't speak english very well.
+
 ## Installation
 ```python
 pip install git+https://github.com/styalai/xLSTM-pytorch
