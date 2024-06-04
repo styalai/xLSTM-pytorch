@@ -34,7 +34,8 @@ print(out.shape)
 I test a mLSTM block (18M parameters) on a nlp task (tiny shakespeare dataset of Karpathy).
 
 LOSS :
-<img src="/assets/loss3000xlstm.PNG" alt="drawing" width="200"/>
+<img src="/assets/loss3000xlstm.PNG" alt="drawing" width="400"/>
+<img src="/assets/loss6000.PNG" alt="drawing" width="400"/>
 
 ## Citation
 
