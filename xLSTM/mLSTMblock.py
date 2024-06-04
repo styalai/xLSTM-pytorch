@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from xLSTM.utils import BlockDiagonal, CausalConv1D
 
 class mLSTMblock(nn.Module):
-    def __init__(self, x_example, factor, depth):
+    def __init__(self, x_example, factor, depth, dropout=0.2):
         super().__init__()
         self.input_size = x_example.shape[2]
         self.hidden_size = int(self.input_size*factor)
@@ -15,6 +15,7 @@ class mLSTMblock(nn.Module):
         self.right = nn.Linear(self.input_size, self.hidden_size)
         
         self.conv = CausalConv1D(self.hidden_size, self.hidden_size, self.input_size) 
+        self.drop = nn.Dropout(dropout)
         
         self.lskip = nn.Linear(self.hidden_size, self.hidden_size)
         
@@ -54,7 +55,7 @@ class mLSTMblock(nn.Module):
         right = F.silu(self.right(x)) # part right with just swish (silu) function
 
         left_left = left.transpose(1, 2)
-        left_left = F.silu(self.conv( left_left ).transpose(1, 2) )
+        left_left = F.silu( self.drop( self.conv( left_left ).transpose(1, 2) ) )
         l_skip = self.lskip(left_left)
 
         # start mLSTM
