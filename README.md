@@ -30,6 +30,12 @@ out = model(x)
 print(out.shape)
 # torch.Size([4, 8, 32])
 ```
+## Result
+I test a mLSTM block (18M parameters) on a nlp task (tiny shakespeare dataset of Karpathy).
+
+LOSS :
+<img></img>
+
 ## Citation
 
 If you use xlstm-pytorch in your research or projects, please cite the original xLSTM paper:
