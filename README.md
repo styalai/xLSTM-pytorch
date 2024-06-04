@@ -32,9 +32,11 @@ print(out.shape)
 ```
 ## Result
 I test a mLSTM block (18M parameters) on a nlp task (tiny shakespeare dataset of Karpathy).
-Code in 'examples/tinyshakespeare'
+
 <img src="/assets/loss3000xlstm.PNG" alt="drawing" width="400"/>
 <img src="/assets/loss6000.PNG" alt="drawing" width="400"/>
+
+Code in 'examples/tinyshakespeare'
 
 ## Citation
 
