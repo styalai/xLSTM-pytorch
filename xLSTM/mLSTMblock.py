@@ -68,6 +68,7 @@ class mLSTMblock(nn.Module):
         o = torch.sigmoid(self.lno(self.o_gate(left_left)))
 
         ct_1 = self.ct_1
+        print(f.shape, ct_1.shape)
         ct = f*ct_1 + i*v*k
         ct = self.ln_c(ct)
         self.ct_1 = ct.detach()
