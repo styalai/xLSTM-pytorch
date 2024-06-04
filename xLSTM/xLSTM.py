@@ -22,6 +22,10 @@ class xLSTM(nn.Module):
         [l.init_states(x) for l in self.layers]
         
     def forward(self, x):
+        x_original = x.clone()
         for l in self.layers:
-            x = l(x)
+            if self.layers.index(l) < len(self.layers)-2:
+                x = l(x) + x_original
+            else:
+                x = l(x)
         return x
