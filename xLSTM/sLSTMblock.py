@@ -59,17 +59,17 @@ class sLSTMblock(nn.Module):
         
         ct_1 = self.ct_1
         ct = f*ct_1 + i*z
-        ct = self.ln_c(ct)
-        self.ct_1 = ct.detach()[0, 0, :]
+        ct = torch.mean(self.ln_c(ct), [0, 1], keepdim=True)
+        self.ct_1 = ct.detach()
         
         nt_1 = self.nt_1
         nt = f*nt_1 + i
-        nt = self.ln_n(nt)
-        self.nt_1 = nt.detach()[0, 0, :]
+        nt = torch.mean(self.ln_n(nt), [0, 1], keepdim=True)
+        self.nt_1 = nt.detach()
         
         ht = o*(ct/nt) # torch.Size([4, 8, 16])
-        ht = self.ln_h(ht)
-        self.ht_1 = ht.detach()[0, 0, :]
+        ht = torch.mean(self.ln_h(ht), [0, 1], keepdim=True)
+        self.ht_1 = ht.detach()
         # end sLSTM
         
         slstm_out = self.GN(ht)
