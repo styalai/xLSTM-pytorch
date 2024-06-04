@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from xLSTM.utils import BlockDiagonal, CausalConv1D
 
 class sLSTMblock(nn.Module):
-    def __init__(self, x_example, depth):
+    def __init__(self, x_example, depth, dropout=0.2):
         super().__init__()
         self.input_size = x_example.shape[2]
         conv_channels = x_example.shape[1]
@@ -12,6 +12,7 @@ class sLSTMblock(nn.Module):
         self.ln = nn.LayerNorm(self.input_size)
         
         self.conv = CausalConv1D(self.input_size, self.input_size, self.input_size)
+        self.drop = nn.Dropout(dropout)
         
         self.i_gate = BlockDiagonal(self.input_size, self.input_size, depth)
         self.f_gate = BlockDiagonal(self.input_size, self.input_size, depth)
@@ -45,7 +46,7 @@ class sLSTMblock(nn.Module):
     def forward(self, x):
         x = self.ln(x)
         
-        x_conv = F.silu(self.conv( x.transpose(1, 2) ).transpose(1, 2)  )
+        x_conv = F.silu( self.drop(self.conv( x.transpose(1, 2) ).transpose(1, 2) ) )
         
         # start sLSTM
         ht_1 = self.ht_1
@@ -59,16 +60,16 @@ class sLSTMblock(nn.Module):
         ct_1 = self.ct_1
         ct = f*ct_1 + i*z
         ct = self.ln_c(ct)
-        self.ct_1 = ct.detach()
+        self.ct_1 = ct.detach()[0, 0, :]
         
         nt_1 = self.nt_1
         nt = f*nt_1 + i
         nt = self.ln_n(nt)
-        self.nt_1 = nt.detach()
+        self.nt_1 = nt.detach()[0, 0, :]
         
         ht = o*(ct/nt) # torch.Size([4, 8, 16])
         ht = self.ln_h(ht)
-        self.ht_1 = ht.detach()
+        self.ht_1 = ht.detach()[0, 0, :]
         # end sLSTM
         
         slstm_out = self.GN(ht)
