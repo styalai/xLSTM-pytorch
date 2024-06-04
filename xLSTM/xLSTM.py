@@ -24,8 +24,6 @@ class xLSTM(nn.Module):
     def forward(self, x):
         x_original = x.clone()
         for l in self.layers:
-            if self.layers.index(l) < len(self.layers)-2:
-                x = l(x) + x_original
-            else:
-                x = l(x)
+             x = l(x) + x_original
+
         return x
