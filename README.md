@@ -23,7 +23,7 @@ factor = 2 # by how much is input_size multiplied to give hidden_size
 depth = 4 # number of block for q, k and v
 layers = 'ms' # m for mLSTMblock and s for sLSTMblock
 
-model = xlstm(layers, x_example, factor=factor, depth=depth, conv=True)
+model = xlstm(layers, x_example, factor=factor, depth=depth)
 
 x = torch.randn(batch_size, seq_lenght, input_size)
 out = model(x)
