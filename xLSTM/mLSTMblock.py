@@ -68,15 +68,14 @@ class mLSTMblock(nn.Module):
         o = torch.sigmoid(self.lno(self.o_gate(left_left)))
 
         ct_1 = self.ct_1
-        print(f.shape, ct_1.shape)
         ct = f*ct_1 + i*v*k
         ct = self.ln_c(ct)
-        self.ct_1 = ct.detach()
+        self.ct_1 = ct.detach()[0, 0, :]
         
         nt_1 = self.nt_1
         nt = f*nt_1 + i*k
         nt = self.ln_n(nt)
-        self.nt_1 = nt.detach()
+        self.nt_1 = nt.detach()[0, 0, :]
         
         ht = o * ((ct*q) / torch.max(nt*q)) # [batchs_size, ?, hiddden_size]
         # end mLSTM
