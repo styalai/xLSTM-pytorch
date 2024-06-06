@@ -36,6 +36,8 @@ class mLSTMblock(nn.Module):
         
         self.GN = nn.LayerNorm(self.hidden_size)
         self.ln_out = nn.LayerNorm(self.hidden_size)
+
+        self.drop2 = nn.Dropout(dropout)
         
         self.proj = nn.Linear(self.hidden_size, self.input_size)
         self.ln_proj = nn.LayerNorm(self.input_size)
@@ -79,6 +81,7 @@ class mLSTMblock(nn.Module):
         
         ht = o * ((ct*q) / torch.max(nt*q)) # [batchs_size, ?, hiddden_size]
         # end mLSTM
+        ht = self.drop2(ht)
         
         left = self.GN(ht + l_skip)
         
