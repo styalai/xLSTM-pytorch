@@ -14,7 +14,6 @@ class BlockDiagonal(nn.Module):
         self.in_features = in_features
         self.out_features = out_features
         self.num_blocks = num_blocks
-        self.drop = nn.Dropout(0.1)
 
         assert out_features % num_blocks == 0
         
@@ -28,7 +27,7 @@ class BlockDiagonal(nn.Module):
     def forward(self, x):
         x = [block(x) for block in self.blocks]
         x = torch.cat(x, dim=-1)
-        return self.drop(x)
+        return x
     
 class CausalConv1D(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size, dilation=1, **kwargs):
