@@ -30,7 +30,7 @@ class BlockDiagonal(nn.Module):
         return x
     
 class CausalConv1D(nn.Module):
-    def __init__(self, in_channels, out_channels, kernel_size, dilation=0.5, **kwargs):
+    def __init__(self, in_channels, out_channels, kernel_size, dilation=1, **kwargs):
         super(CausalConv1D, self).__init__()
         self.padding = (kernel_size - 1) * dilation
         self.conv = nn.Conv1d(in_channels, out_channels, kernel_size, padding=self.padding, dilation=dilation, **kwargs)
