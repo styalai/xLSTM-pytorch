@@ -22,9 +22,9 @@ class mLSTMblock(nn.Module):
         self.wq = BlockDiagonal(self.hidden_size, self.hidden_size, depth)
         self.wk = BlockDiagonal(self.hidden_size, self.hidden_size, depth)
         self.wv = BlockDiagonal(self.hidden_size, self.hidden_size, depth)
-        self.dropq = nn.Dropout(0.1)
-        self.dropk = nn.Dropout(0.1)
-        self.dropv = nn.Dropout(0.1)
+        self.dropq = nn.Dropout(dropout)
+        self.dropk = nn.Dropout(dropout)
+        self.dropv = nn.Dropout(dropout)
         
         self.i_gate = nn.Linear(self.hidden_size, self.hidden_size)
         self.f_gate = nn.Linear(self.hidden_size, self.hidden_size)
@@ -84,9 +84,9 @@ class mLSTMblock(nn.Module):
         
         ht = o * ((ct*q) / torch.max(nt*q)) # [batchs_size, ?, hiddden_size]
         # end mLSTM
-        ht = self.drop2(ht)
+        ht = ht
         
-        left = self.GN(ht + l_skip)
+        left = self.drop2(self.GN(ht + l_skip))
         
         out = self.ln_out(left * right)
         out = self.ln_proj(self.proj(out))
