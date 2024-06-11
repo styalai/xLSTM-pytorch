@@ -22,9 +22,9 @@ class mLSTMblock(nn.Module):
         self.wq = BlockDiagonal(self.hidden_size, self.hidden_size, depth)
         self.wk = BlockDiagonal(self.hidden_size, self.hidden_size, depth)
         self.wv = BlockDiagonal(self.hidden_size, self.hidden_size, depth)
-        self.dropq = nn.Dropout(dropout)
-        self.dropk = nn.Dropout(dropout)
-        self.dropv = nn.Dropout(dropout)
+        self.dropq = nn.Dropout(dropout/2)
+        self.dropk = nn.Dropout(dropout/2)
+        self.dropv = nn.Dropout(dropout/2)
         
         self.i_gate = nn.Linear(self.hidden_size, self.hidden_size)
         self.f_gate = nn.Linear(self.hidden_size, self.hidden_size)
