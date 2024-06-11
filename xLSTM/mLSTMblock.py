@@ -84,9 +84,9 @@ class mLSTMblock(nn.Module):
         
         ht = o * ((ct*q) / torch.max(nt*q)) # [batchs_size, ?, hiddden_size]
         # end mLSTM
-        ht = self.drop2(ht)
+        ht = ht
         
-        left = self.GN(ht + l_skip)
+        left = self.drop2(self.GN(ht + l_skip))
         
         out = self.ln_out(left * right)
         out = self.ln_proj(self.proj(out))
