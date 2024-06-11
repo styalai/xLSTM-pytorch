@@ -20,7 +20,7 @@ class BlockDiagonal(nn.Module):
         block_out_features = out_features // num_blocks
         
         self.blocks = nn.ModuleList([
-            nn.Sequential(nn.Linear(in_features, block_out_features, bias=bias), nn.L1Loss())
+            nn.Linear(in_features, block_out_features, bias=bias)
             for _ in range(num_blocks)
         ])
         
