@@ -47,6 +47,7 @@ class sLSTMblock(nn.Module):
         self.nt_1 = torch.zeros(1, 1, x.shape[2])
         self.ct_1 = torch.zeros(1, 1, x.shape[2])
         self.ht_1 = torch.zeros(1, 1, x.shape[2])
+        self.mt_1 = torch.zeros(1, 1, x.shape[2])
         
     def forward(self, x):
         x = self.ln(x)
