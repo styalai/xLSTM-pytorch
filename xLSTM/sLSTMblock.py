@@ -60,8 +60,7 @@ class sLSTMblock(nn.Module):
         i = torch.exp(self.ln_i( self.i_gate(x_conv) + self.ri_gate(ht_1) ) )
         f = torch.exp( self.ln_f(self.f_gate(x_conv) + self.rf_gate(ht_1) ) )
 
-        print(torch.log(f).shape, self.mt_1[:, 0, :].shape)
-        m = torch.max(torch.log(f)+self.mt_1[:, 0, :], torch.log(i))
+        m = torch.max(torch.log(f)+self.mt_1[:, 0, :].unsqueeze(1), torch.log(i))
         i = torch.exp(torch.log(i) - m)
         f = torch.exp(torch.log(f) + self.mt_1-m)
         self.mt_1 = m.detach()
