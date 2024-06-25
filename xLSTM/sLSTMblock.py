@@ -62,7 +62,7 @@ class sLSTMblock(nn.Module):
 
         m = torch.max(torch.log(f)+self.mt_1[:, 0, :].unsqueeze(1), torch.log(i))
         i = torch.exp(torch.log(i) - m)
-        f = torch.exp(torch.log(f) + self.mt_1-m)
+        f = torch.exp(torch.log(f) + self.mt_1[:, 0, :].unsqueeze(1)-m)
         self.mt_1 = m.detach()
         
         o = torch.sigmoid( self.ln_o(self.o_gate(x) + self.ro_gate(ht_1) ) )
