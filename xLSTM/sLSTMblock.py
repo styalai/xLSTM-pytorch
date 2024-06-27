@@ -44,10 +44,10 @@ class sLSTMblock(nn.Module):
         self.init_states(x_example)
         
     def init_states(self, x):
-        self.nt_1 = torch.zeros(1, 1, x.shape[2])
-        self.ct_1 = torch.zeros(1, 1, x.shape[2])
-        self.ht_1 = torch.zeros(1, 1, x.shape[2])
-        self.mt_1 = torch.zeros(1, 1, x.shape[2])
+        self.nt_1 = torch.zeros(1, 1, x.shape[2], device=x.device)
+        self.ct_1 = torch.zeros(1, 1, x.shape[2], device=x.device)
+        self.ht_1 = torch.zeros(1, 1, x.shape[2], device=x.device)
+        self.mt_1 = torch.zeros(1, 1, x.shape[2], device=x.device)
         
     def forward(self, x):
         x = self.ln(x)
