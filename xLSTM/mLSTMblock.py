@@ -82,7 +82,7 @@ class mLSTMblock(nn.Module):
         nt =torch.mean( self.ln_n(nt), [0, 1], keepdim=True)
         self.nt_1 = nt.detach()
         
-        ht = o * ((ct*q) / torch.max(nt*q, -1))
+        ht = o * ((ct*q) / torch.max(nt*q))
         # end mLSTM
         ht = ht
         
