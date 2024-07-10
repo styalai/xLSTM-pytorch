@@ -1,5 +1,7 @@
 # xLSTM-pytorch
 A easy to use and efficient implementation of xLSTM.
+Here are a few articles to help you understand :
+ - [understand math ][https://medium.com/@arthur.lagacherie/implement-the-xlstm-paper-from-scratch-with-pytorch-3a2a4ddb4f94]
 
 ## INFO
 I am sorry for the potencial mistakes on my docs because I am French and and don't speak english very well. <b>And if you like this repository put a star.</b>
