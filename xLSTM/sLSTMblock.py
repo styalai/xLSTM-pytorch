@@ -41,13 +41,11 @@ class sLSTMblock(nn.Module):
         
         self.proj = nn.Linear(int(self.input_size*(4/3)), self.input_size)
         
-        self.init_states(x_example)
+        self.nt_1 = nn.Buffer(data=torch.zeros(1, 1, self.input_size))
+        self.ct_1 = nn.Buffer(data=torch.zeros(1, 1, self.input_size))
+        self.ht_1 = nn.Buffer(data=torch.zeros(1, 1, self.input_size))
+        self.mt_1 = nn.Buffer(data=torch.zeros(1, 1, self.input_size))
         
-    def init_states(self, x):
-        self.nt_1 = torch.zeros(1, 1, x.shape[2], device=x.device)
-        self.ct_1 = torch.zeros(1, 1, x.shape[2], device=x.device)
-        self.ht_1 = torch.zeros(1, 1, x.shape[2], device=x.device)
-        self.mt_1 = torch.zeros(1, 1, x.shape[2], device=x.device)
         
     def forward(self, x):
         x = self.ln(x)

@@ -45,12 +45,10 @@ class mLSTMblock(nn.Module):
         self.proj = nn.Linear(self.hidden_size, self.input_size)
         self.ln_proj = nn.LayerNorm(self.input_size)
         
-        self.init_states(x_example)
+        self.ct_1 = nn.Buffer(data=torch.zeros([1, 1, self.hidden_size]))
+        self.nt_1 = nn.Buffer(data=torch.zeros([1, 1, self.hidden_size]))
     
-    def init_states(self, x_example):
-        self.ct_1 = torch.zeros([1, 1, self.hidden_size], device=x_example.device)
-        self.nt_1 = torch.zeros([1, 1, self.hidden_size], device=x_example.device)
-    
+
     def forward(self, x):
         assert x.ndim == 3
         
