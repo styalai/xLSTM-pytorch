@@ -17,9 +17,6 @@ class xLSTM(nn.Module):
             else:
                 raise ValueError(f"Invalid layer type: {layer_type}. Choose 's' for sLSTM or 'm' for mLSTM.")
             self.layers.append(layer)
-    
-    def init_states(self, x):
-        [l.init_states(x) for l in self.layers]
         
     def forward(self, x):
         x_original = x.clone()
